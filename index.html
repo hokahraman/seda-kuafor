@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Seda Kuaför – İstanbul</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ivory: #FAF6F0;
+    --cream: #F2EAE0;
+    --wine: #6B2D3E;
+    --wine-light: #8B4558;
+    --gold: #C4955A;
+    --gold-light: #D9B483;
+    --blush: #EDD5C5;
+    --text: #2C1810;
+    --text-soft: #7A6055;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Jost', sans-serif;
+    background: var(--ivory);
+    color: var(--text);
+    font-weight: 300;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 20px 48px;
+    background: rgba(250,246,240,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(196,149,90,0.2);
+  }
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    color: var(--wine);
+    letter-spacing: 0.04em;
+  }
+  .nav-logo span { color: var(--gold); font-style: italic; }
+  nav ul { list-style: none; display: flex; gap: 36px; }
+  nav ul a {
+    text-decoration: none; color: var(--text-soft);
+    font-size: 0.85rem; letter-spacing: 0.1em; text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  nav ul a:hover { color: var(--wine); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
+    text-align: center;
+    padding: 120px 24px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 20% 50%, rgba(196,149,90,0.12) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 80% at 80% 30%, rgba(107,45,62,0.08) 0%, transparent 60%);
+  }
+  .hero-tag {
+    font-size: 0.75rem; letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 20px;
+    opacity: 0; animation: fadeUp 0.8s 0.2s forwards;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3rem, 8vw, 6rem);
+    line-height: 1.05;
+    color: var(--wine);
+    margin-bottom: 12px;
+    opacity: 0; animation: fadeUp 0.9s 0.4s forwards;
+  }
+  .hero h1 em { font-style: italic; color: var(--gold); }
+  .hero-sub {
+    font-size: 1rem; color: var(--text-soft); letter-spacing: 0.05em;
+    margin-bottom: 48px;
+    opacity: 0; animation: fadeUp 0.9s 0.6s forwards;
+  }
+  .hero-cta {
+    display: inline-block;
+    padding: 16px 48px;
+    background: var(--wine);
+    color: #fff;
+    text-decoration: none;
+    font-size: 0.85rem; letter-spacing: 0.15em; text-transform: uppercase;
+    transition: background 0.2s, transform 0.2s;
+    opacity: 0; animation: fadeUp 0.9s 0.8s forwards;
+  }
+  .hero-cta:hover { background: var(--wine-light); transform: translateY(-2px); }
+
+  .hero-ornament {
+    position: absolute;
+    font-family: 'Playfair Display', serif;
+    font-size: 22vw; font-weight: 600;
+    color: rgba(107,45,62,0.04);
+    top: 50%; left: 50%; transform: translate(-50%,-50%);
+    pointer-events: none; user-select: none;
+    white-space: nowrap;
+  }
+
+  /* DIVIDER */
+  .divider {
+    display: flex; align-items: center; gap: 16px;
+    padding: 0 48px; max-width: 900px; margin: 0 auto;
+  }
+  .divider-line { flex: 1; height: 1px; background: var(--gold-light); opacity: 0.4; }
+  .divider-icon { color: var(--gold); font-size: 1.2rem; }
+
+  /* SECTION */
+  section { padding: 96px 48px; max-width: 1100px; margin: 0 auto; }
+
+  .section-tag {
+    font-size: 0.7rem; letter-spacing: 0.3em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 12px;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    color: var(--wine); margin-bottom: 48px;
+  }
+  .section-title em { font-style: italic; }
+
+  /* SERVICES */
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2px;
+    background: var(--gold-light);
+    border: 2px solid var(--gold-light);
+    opacity: 0.5;
+  }
+  .services-grid { opacity: 1; }
+
+  .service-card {
+    background: var(--ivory);
+    padding: 48px 40px;
+    transition: background 0.3s;
+    position: relative; overflow: hidden;
+  }
+  .service-card::after {
+    content: '';
+    position: absolute; bottom: 0; left: 0;
+    width: 0; height: 3px;
+    background: var(--wine);
+    transition: width 0.4s ease;
+  }
+  .service-card:hover { background: var(--cream); }
+  .service-card:hover::after { width: 100%; }
+
+  .service-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 3rem; color: rgba(196,149,90,0.2);
+    line-height: 1; margin-bottom: 16px;
+  }
+  .service-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem; color: var(--wine);
+    margin-bottom: 8px;
+  }
+  .service-desc { font-size: 0.85rem; color: var(--text-soft); line-height: 1.7; }
+
+  /* HOURS */
+  .hours-block {
+    display: flex; flex-wrap: wrap; gap: 48px;
+    padding: 48px; background: var(--wine);
+    color: #fff;
+  }
+  .hours-item { flex: 1; min-width: 200px; }
+  .hours-label {
+    font-size: 0.7rem; letter-spacing: 0.3em; text-transform: uppercase;
+    color: rgba(255,255,255,0.6); margin-bottom: 8px;
+  }
+  .hours-val {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+  }
+  .hours-note { font-size: 0.85rem; color: rgba(255,255,255,0.7); margin-top: 4px; }
+
+  /* BOOKING FORM */
+  #randevu { background: var(--cream); max-width: 100%; padding: 96px 0; }
+  #randevu .inner { max-width: 1100px; margin: 0 auto; padding: 0 48px; }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-top: 48px;
+  }
+  .form-group { display: flex; flex-direction: column; gap: 8px; }
+  .form-group.full { grid-column: 1 / -1; }
+
+  label {
+    font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--text-soft);
+  }
+  input, select, textarea {
+    border: 1px solid rgba(196,149,90,0.35);
+    background: var(--ivory);
+    padding: 14px 16px;
+    font-family: 'Jost', sans-serif;
+    font-size: 0.95rem; color: var(--text);
+    outline: none;
+    transition: border-color 0.2s;
+    appearance: none;
+  }
+  input:focus, select:focus, textarea:focus {
+    border-color: var(--wine);
+  }
+  select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236B2D3E' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+    padding-right: 40px;
+    cursor: pointer;
+  }
+
+  .time-slots {
+    display: flex; flex-wrap: wrap; gap: 8px;
+  }
+  .time-slot {
+    padding: 8px 16px;
+    border: 1px solid rgba(196,149,90,0.35);
+    background: var(--ivory);
+    font-family: 'Jost', sans-serif;
+    font-size: 0.85rem; cursor: pointer;
+    transition: all 0.2s; color: var(--text);
+  }
+  .time-slot:hover { border-color: var(--wine); color: var(--wine); }
+  .time-slot.selected { background: var(--wine); color: #fff; border-color: var(--wine); }
+  .time-slot.disabled { opacity: 0.3; cursor: not-allowed; pointer-events: none; }
+
+  .submit-btn {
+    margin-top: 32px;
+    padding: 18px 56px;
+    background: var(--wine);
+    color: #fff; border: none; cursor: pointer;
+    font-family: 'Jost', sans-serif;
+    font-size: 0.85rem; letter-spacing: 0.15em; text-transform: uppercase;
+    transition: background 0.2s, transform 0.2s;
+    width: 100%;
+  }
+  .submit-btn:hover { background: var(--wine-light); transform: translateY(-1px); }
+
+  .success-msg {
+    display: none;
+    text-align: center; padding: 48px;
+    background: var(--ivory);
+    border: 1px solid rgba(196,149,90,0.3);
+    margin-top: 32px;
+  }
+  .success-msg .check { font-size: 2.5rem; margin-bottom: 16px; }
+  .success-msg h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem; color: var(--wine); margin-bottom: 8px;
+  }
+  .success-msg p { color: var(--text-soft); font-size: 0.9rem; line-height: 1.7; }
+  .success-msg .wa-link {
+    display: inline-block; margin-top: 20px;
+    padding: 14px 36px;
+    background: #25D366; color: #fff;
+    text-decoration: none;
+    font-size: 0.85rem; letter-spacing: 0.1em;
+    transition: opacity 0.2s;
+  }
+  .success-msg .wa-link:hover { opacity: 0.9; }
+
+  /* FOOTER */
+  footer {
+    background: var(--wine);
+    color: rgba(255,255,255,0.8);
+    padding: 48px;
+    display: flex; flex-wrap: wrap;
+    justify-content: space-between; align-items: center; gap: 24px;
+  }
+  .footer-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem; color: #fff;
+  }
+  .footer-logo em { color: var(--gold-light); }
+  footer p { font-size: 0.85rem; }
+  footer a { color: var(--gold-light); text-decoration: none; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .fade-in {
+    opacity: 0; transform: translateY(20px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 768px) {
+    nav { padding: 16px 20px; }
+    nav ul { display: none; }
+    section { padding: 64px 20px; }
+    .form-grid { grid-template-columns: 1fr; }
+    .hours-block { padding: 32px 20px; }
+    #randevu .inner { padding: 0 20px; }
+    footer { padding: 32px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">Seda <span>Kuaför</span></div>
+  <ul>
+    <li><a href="#hizmetler">Hizmetler</a></li>
+    <li><a href="#randevu">Randevu</a></li>
+    <li><a href="#iletisim">İletişim</a></li>
+  </ul>
+</nav>
+
+<div class="hero">
+  <div class="hero-ornament">SK</div>
+  <p class="hero-tag">İstanbul · Güzellik & Bakım</p>
+  <h1>Seda <em>Kuaför</em></h1>
+  <p class="hero-sub">Saçlarınıza özel ilgi, size özel zaman.</p>
+  <a href="#randevu" class="hero-cta">Randevu Al</a>
+</div>
+
+<div class="divider">
+  <div class="divider-line"></div>
+  <div class="divider-icon">✦</div>
+  <div class="divider-line"></div>
+</div>
+
+<section id="hizmetler">
+  <p class="section-tag fade-in">Sunduğumuz Hizmetler</p>
+  <h2 class="section-title fade-in">Size özel <em>bakım</em></h2>
+
+  <div class="services-grid fade-in">
+    <div class="service-card">
+      <div class="service-num">01</div>
+      <div class="service-name">Saç Kesimi</div>
+      <div class="service-desc">Yüz şeklinize ve stilinize özel kesim. Hem klasik hem modern teknikler.</div>
+    </div>
+    <div class="service-card">
+      <div class="service-num">02</div>
+      <div class="service-name">Boya / Röfle</div>
+      <div class="service-desc">Kalıcı boya, röfle, balyaj ve ombre teknikleriyle canlı renkler.</div>
+    </div>
+    <div class="service-card">
+      <div class="service-num">03</div>
+      <div class="service-name">Manikür / Pedikür</div>
+      <div class="service-desc">El ve ayak bakımı, tırnak şekillendirme, oje uygulaması.</div>
+    </div>
+  </div>
+</section>
+
+<div class="hours-block fade-in" style="max-width:1100px; margin: 0 auto 0; display:flex; flex-wrap:wrap; gap:48px; padding:48px;">
+  <div class="hours-item">
+    <div class="hours-label">Çalışma Günleri</div>
+    <div class="hours-val">Salı Hariç Her Gün</div>
+    <div class="hours-note">Pazartesi – Çarşamba – Perşembe – Cuma – Cumartesi – Pazar</div>
+  </div>
+  <div class="hours-item">
+    <div class="hours-label">Çalışma Saatleri</div>
+    <div class="hours-val">09:00 – 19:00</div>
+    <div class="hours-note">Son randevu 18:30</div>
+  </div>
+  <div class="hours-item">
+    <div class="hours-label">WhatsApp</div>
+    <div class="hours-val"><a href="https://wa.me/905378731929" style="color:#fff; text-decoration:none;">0537 873 19 29</a></div>
+    <div class="hours-note">Hızlı iletişim için</div>
+  </div>
+</div>
+
+<section id="randevu" style="max-width:100%; padding:0; background:var(--cream);">
+  <div class="inner" style="max-width:1100px; margin:0 auto; padding:96px 48px;">
+    <p class="section-tag fade-in">Online Randevu</p>
+    <h2 class="section-title fade-in">Yerinizi <em>ayırtın</em></h2>
+
+    <div id="booking-form">
+      <div class="form-grid fade-in">
+        <div class="form-group">
+          <label>Ad Soyad</label>
+          <input type="text" id="name" placeholder="Adınız ve soyadınız">
+        </div>
+        <div class="form-group">
+          <label>Telefon</label>
+          <input type="tel" id="phone" placeholder="05XX XXX XX XX">
+        </div>
+        <div class="form-group">
+          <label>Hizmet</label>
+          <select id="service">
+            <option value="">Hizmet seçin...</option>
+            <option value="Saç Kesimi">Saç Kesimi</option>
+            <option value="Boya / Röfle">Boya / Röfle</option>
+            <option value="Manikür / Pedikür">Manikür / Pedikür</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Tarih</label>
+          <input type="date" id="date" min="">
+        </div>
+        <div class="form-group full">
+          <label>Saat Seçin</label>
+          <div class="time-slots" id="time-slots"></div>
+        </div>
+        <div class="form-group full">
+          <label>Not (İsteğe bağlı)</label>
+          <input type="text" id="note" placeholder="Özel bir isteğiniz var mı?">
+        </div>
+      </div>
+      <button class="submit-btn" onclick="submitBooking()">Randevu Talebini Gönder</button>
+    </div>
+
+    <div class="success-msg" id="success-msg">
+      <div class="check">💐</div>
+      <h3>Randevu Talebiniz Alındı!</h3>
+      <p id="success-detail"></p>
+      <a id="wa-confirm-link" href="#" class="wa-link" target="_blank">📱 WhatsApp'tan da Bildir</a>
+    </div>
+  </div>
+</section>
+
+<footer id="iletisim">
+  <div>
+    <div class="footer-logo">Seda <em>Kuaför</em></div>
+    <p style="margin-top:8px; font-size:0.8rem;">İstanbul</p>
+  </div>
+  <div>
+    <p><a href="https://wa.me/905378731929">📱 0537 873 19 29</a></p>
+    <p style="margin-top:8px; font-size:0.75rem; opacity:0.6;">© 2025 Seda Kuaför</p>
+  </div>
+</footer>
+
+<script>
+const CLOSED_DAY = 2; // Salı = 2 (0=Pazar, 1=Pzt, 2=Salı...)
+const OPEN_HOUR = 9, CLOSE_HOUR = 18, CLOSE_MIN = 30;
+const WA_NUMBER = '905378731929';
+
+// Set min date
+const dateInput = document.getElementById('date');
+const today = new Date();
+dateInput.min = today.toISOString().split('T')[0];
+
+// Disable Tuesdays
+dateInput.addEventListener('input', function() {
+  const d = new Date(this.value + 'T00:00:00');
+  if (d.getDay() === CLOSED_DAY) {
+    alert('Salı günleri kapalıyız. Lütfen başka bir gün seçin.');
+    this.value = '';
+  } else { generateTimeSlots(this.value); }
+});
+
+let selectedTime = '';
+
+function generateTimeSlots(dateStr) {
+  const container = document.getElementById('time-slots');
+  container.innerHTML = '';
+  selectedTime = '';
+
+  const slots = [];
+  for (let h = OPEN_HOUR; h <= CLOSE_HOUR; h++) {
+    for (let m = 0; m < 60; m += 30) {
+      if (h === CLOSE_HOUR && m > CLOSE_MIN) break;
+      slots.push(`${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`);
+    }
+  }
+
+  // Get booked slots
+  const booked = getBookedSlots(dateStr);
+
+  slots.forEach(t => {
+    const btn = document.createElement('button');
+    btn.className = 'time-slot' + (booked.includes(t) ? ' disabled' : '');
+    btn.textContent = t;
+    if (!booked.includes(t)) {
+      btn.onclick = () => {
+        document.querySelectorAll('.time-slot').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        selectedTime = t;
+      };
+    }
+    container.appendChild(btn);
+  });
+}
+
+function getBookedSlots(dateStr) {
+  const all = JSON.parse(localStorage.getItem('seda_appointments') || '[]');
+  return all.filter(a => a.date === dateStr && a.status !== 'iptal').map(a => a.time);
+}
+
+function submitBooking() {
+  const name = document.getElementById('name').value.trim();
+  const phone = document.getElementById('phone').value.trim();
+  const service = document.getElementById('service').value;
+  const date = document.getElementById('date').value;
+  const note = document.getElementById('note').value.trim();
+
+  if (!name || !phone || !service || !date || !selectedTime) {
+    alert('Lütfen tüm alanları doldurun ve bir saat seçin.');
+    return;
+  }
+
+  const appointment = {
+    id: Date.now().toString(),
+    name, phone, service, date, time: selectedTime, note,
+    status: 'bekliyor',
+    createdAt: new Date().toISOString()
+  };
+
+  const all = JSON.parse(localStorage.getItem('seda_appointments') || '[]');
+  all.push(appointment);
+  localStorage.setItem('seda_appointments', JSON.stringify(all));
+
+  // Show success
+  document.getElementById('booking-form').style.display = 'none';
+  const msg = document.getElementById('success-msg');
+  msg.style.display = 'block';
+
+  const dateFormatted = new Date(date + 'T00:00:00').toLocaleDateString('tr-TR', { weekday:'long', day:'numeric', month:'long' });
+  document.getElementById('success-detail').innerHTML =
+    `<strong>${name}</strong> için <strong>${dateFormatted}</strong> saat <strong>${selectedTime}</strong><br>${service} randevunuz alınmıştır.<br><br>Salonumuz kısa süre içinde sizi arayacak ya da WhatsApp üzerinden onaylayacaktır.`;
+
+  const waMsg = encodeURIComponent(`Merhaba Seda Hanım! Randevu almak istiyorum.\n\n👤 Ad: ${name}\n📞 Tel: ${phone}\n✂️ Hizmet: ${service}\n📅 Tarih: ${dateFormatted}\n🕐 Saat: ${selectedTime}${note ? '\n📝 Not: ' + note : ''}`);
+  document.getElementById('wa-confirm-link').href = `https://wa.me/${WA_NUMBER}?text=${waMsg}`;
+}
+
+// Scroll animations
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.15 });
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

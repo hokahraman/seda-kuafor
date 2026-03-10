@@ -13,6 +13,7 @@
     --wine: #6B2D3E; --wine-light: #8B4558;
     --gold: #C4955A; --gold-light: #D9B483;
     --text: #2C1810; --text-soft: #7A6055;
+    --green: #3A7D5B;
   }
   html { scroll-behavior: smooth; }
   body { font-family: 'Jost', sans-serif; background: var(--ivory); color: var(--text); font-weight: 300; }
@@ -67,13 +68,11 @@
   input:focus, select:focus { border-color: var(--wine); }
   select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236B2D3E' stroke-width='1.5' fill='none'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 16px center; padding-right: 40px; cursor: pointer; background-color: var(--ivory); }
 
-  /* SERVICE CHIPS */
   .service-chips-wrap { display: flex; flex-wrap: wrap; gap: 8px; }
   .svc-chip { display: inline-flex; align-items: center; gap: 6px; padding: 9px 16px; border: 1px solid rgba(196,149,90,0.4); background: var(--ivory); cursor: pointer; font-family: 'Jost', sans-serif; font-size: 0.85rem; color: var(--text); transition: all 0.2s; user-select: none; }
   .svc-chip:hover { border-color: var(--wine); color: var(--wine); }
   .svc-chip.selected { background: var(--wine); color: #fff; border-color: var(--wine); }
   .svc-chip input { display: none; }
-
   .custom-toggle { margin-top: 10px; padding: 9px 18px; border: 1px dashed rgba(196,149,90,0.5); background: transparent; color: var(--text-soft); font-family: 'Jost', sans-serif; font-size: 0.82rem; cursor: pointer; transition: all 0.2s; }
   .custom-toggle:hover { border-color: var(--wine); color: var(--wine); }
   .custom-input-wrap { display: none; margin-top: 10px; }
@@ -84,10 +83,27 @@
   .time-slot { padding: 8px 14px; border: 1px solid rgba(196,149,90,0.35); background: var(--ivory); font-family: 'Jost', sans-serif; font-size: 0.82rem; cursor: pointer; transition: all 0.2s; color: var(--text); }
   .time-slot:hover { border-color: var(--wine); color: var(--wine); }
   .time-slot.selected { background: var(--wine); color: #fff; border-color: var(--wine); }
-  .time-slot.disabled { opacity: 0.28; cursor: not-allowed; pointer-events: none; }
+  .time-slot.disabled { opacity: 0.28; cursor: not-allowed; pointer-events: none; background: #f0e8e0; }
 
   .submit-btn { margin-top: 32px; padding: 18px 56px; background: var(--wine); color: #fff; border: none; cursor: pointer; font-family: 'Jost', sans-serif; font-size: 0.85rem; letter-spacing: 0.15em; text-transform: uppercase; transition: background 0.2s, transform 0.2s; width: 100%; }
   .submit-btn:hover { background: var(--wine-light); transform: translateY(-1px); }
+
+  /* CONFLICT MODAL */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(44,24,16,0.55); z-index: 300; justify-content: center; align-items: center; padding: 20px; }
+  .modal-overlay.open { display: flex; }
+  .conflict-modal { background: var(--ivory); max-width: 480px; width: 100%; padding: 40px; animation: fadeUp 0.25s ease; }
+  .conflict-modal .icon { font-size: 2.2rem; margin-bottom: 16px; }
+  .conflict-modal h3 { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--wine); margin-bottom: 8px; }
+  .conflict-modal p { font-size: 0.88rem; color: var(--text-soft); line-height: 1.6; margin-bottom: 24px; }
+  .alt-slots { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
+  .alt-slot { padding: 10px 18px; border: 1px solid rgba(196,149,90,0.4); background: #fff; font-family: 'Jost', sans-serif; font-size: 0.88rem; cursor: pointer; color: var(--text); transition: all 0.2s; }
+  .alt-slot:hover { background: var(--wine); color: #fff; border-color: var(--wine); }
+  .alt-slot.picked { background: var(--green); color: #fff; border-color: var(--green); }
+  .conflict-actions { display: flex; gap: 12px; }
+  .conflict-btn { flex: 1; padding: 13px; border: none; cursor: pointer; font-family: 'Jost', sans-serif; font-size: 0.85rem; }
+  .conflict-btn.primary { background: var(--wine); color: #fff; }
+  .conflict-btn.secondary { background: transparent; border: 1px solid rgba(196,149,90,0.4); color: var(--text-soft); }
+  .no-slots-msg { font-size: 0.85rem; color: var(--text-soft); padding: 16px; background: var(--cream); text-align: center; }
 
   .success-msg { display: none; text-align: center; padding: 48px; background: var(--ivory); border: 1px solid rgba(196,149,90,0.3); margin-top: 32px; }
   .success-msg .check { font-size: 2.5rem; margin-bottom: 16px; }
@@ -100,11 +116,10 @@
   .footer-logo em { color: var(--gold-light); }
   footer a { color: var(--gold-light); text-decoration: none; }
 
+  .hint { font-size: 0.78rem; color: var(--text-soft); margin-top: 4px; }
   @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
   .fade-in { opacity: 0; transform: translateY(20px); transition: opacity 0.7s, transform 0.7s; }
   .fade-in.visible { opacity: 1; transform: translateY(0); }
-
-  .hint { font-size: 0.78rem; color: var(--text-soft); margin-top: 4px; }
 
   @media (max-width: 768px) {
     nav { padding: 16px 20px; } nav ul { display: none; }
@@ -167,7 +182,6 @@
 
     <div id="booking-form">
       <div class="form-grid fade-in">
-
         <div class="form-group">
           <label>Ad Soyad</label>
           <input type="text" id="name" placeholder="Adınız ve soyadınız">
@@ -176,31 +190,27 @@
           <label>Telefon</label>
           <input type="tel" id="phone" placeholder="05XX XXX XX XX">
         </div>
-
         <div class="form-group full">
           <label>Hizmet Seçin</label>
-          <p class="hint">Birden fazla seçebilirsiniz. Listede olmayan bir hizmet için alttaki butonu kullanın.</p>
+          <p class="hint">Birden fazla seçebilirsiniz. Listede olmayan için alttaki butonu kullanın.</p>
           <div class="service-chips-wrap" id="service-chips"></div>
           <button type="button" class="custom-toggle" onclick="toggleCustom()">✏️ Listede Olmayan Hizmet / Özel İstek Ekle</button>
           <div class="custom-input-wrap" id="custom-wrap">
-            <input type="text" id="custom-input" placeholder="Örn: Saç Botoksu, Keratin, Gelinlik Makyajı, Perma...">
+            <input type="text" id="custom-input" placeholder="Örn: Saç Botoksu, Keratin, Gelin Makyajı...">
           </div>
         </div>
-
         <div class="form-group">
           <label>Tarih</label>
           <input type="date" id="date">
         </div>
-
         <div class="form-group">
           <label>Saat</label>
           <div class="time-slots" id="time-slots">
-            <p style="font-size:0.82rem; color:var(--text-soft); padding:4px 0;">Önce tarih seçin...</p>
+            <p style="font-size:0.82rem;color:var(--text-soft);padding:4px 0;">Önce tarih seçin...</p>
           </div>
         </div>
-
         <div class="form-group full">
-          <label>Ek Not <span style="font-size:0.8em; opacity:0.6;">(İsteğe bağlı)</span></label>
+          <label>Ek Not <span style="font-size:0.8em;opacity:0.6;">(İsteğe bağlı)</span></label>
           <input type="text" id="note" placeholder="Saç uzunluğu, renk tercihi, özel bir isteğiniz...">
         </div>
       </div>
@@ -216,33 +226,89 @@
   </div>
 </div>
 
+<!-- CONFLICT MODAL -->
+<div class="modal-overlay" id="conflict-overlay">
+  <div class="conflict-modal">
+    <div class="icon">⚠️</div>
+    <h3>Bu Saat Dolu!</h3>
+    <p id="conflict-msg"></p>
+    <div id="alt-slots-wrap"></div>
+    <div class="conflict-actions">
+      <button class="conflict-btn secondary" onclick="closeConflict()">Geri Dön</button>
+      <button class="conflict-btn primary" id="conflict-confirm-btn" onclick="confirmAltSlot()" style="display:none;">Bu Saati Seç ve Gönder</button>
+    </div>
+  </div>
+</div>
+
 <footer id="iletisim">
   <div>
     <div class="footer-logo">Seda <em>Kuaför</em></div>
-    <p style="margin-top:8px; font-size:0.8rem;">İstanbul</p>
+    <p style="margin-top:8px;font-size:0.8rem;">İstanbul</p>
   </div>
   <div>
     <p><a href="https://wa.me/905378731929">📱 0537 873 19 29</a></p>
-    <p style="margin-top:8px; font-size:0.75rem; opacity:0.6;">© 2025 Seda Kuaför</p>
+    <p style="margin-top:8px;font-size:0.75rem;opacity:0.6;">© 2025 Seda Kuaför</p>
   </div>
 </footer>
 
 <script>
 const CLOSED_DAY = 2;
 const WA_NUMBER = '905378731929';
+const OPEN_HOUR = 9, CLOSE_HOUR = 18, CLOSE_MIN = 30;
 
 const DEFAULT_SERVICES = [
-  'Saç Kesimi', 'Saç Yıkama & Fön', 'Saç Boyama', 'Röfle / Balyaj',
-  'Ombre', 'Keratin Bakımı', 'Saç Botoksu', 'Perma / Düzleştirme',
-  'Manikür', 'Pedikür', 'Kalıcı Oje', 'Kaş Tasarımı',
-  'İpek Kirpik', 'Makyaj', 'Cilt Bakımı'
+  'Saç Kesimi','Saç Yıkama & Fön','Saç Boyama','Röfle / Balyaj',
+  'Ombre','Keratin Bakımı','Saç Botoksu','Perma / Düzleştirme',
+  'Manikür','Pedikür','Kalıcı Oje','Kaş Tasarımı',
+  'İpek Kirpik','Makyaj','Cilt Bakımı'
 ];
 
 function getServices() {
-  try { const s = localStorage.getItem('seda_services'); return s ? JSON.parse(s) : DEFAULT_SERVICES; }
-  catch(e) { return DEFAULT_SERVICES; }
+  try { const s = localStorage.getItem('seda_services'); return s ? JSON.parse(s) : DEFAULT_SERVICES; } catch(e) { return DEFAULT_SERVICES; }
+}
+function getAppointments() {
+  try { return JSON.parse(localStorage.getItem('seda_appointments') || '[]'); } catch(e) { return []; }
 }
 
+// --- Availability logic with duration support ---
+
+// Convert "HH:MM" to minutes since midnight
+function toMins(t) { const [h,m] = t.split(':').map(Number); return h*60+m; }
+// Convert minutes to "HH:MM"
+function fromMins(m) { return `${String(Math.floor(m/60)).padStart(2,'0')}:${String(m%60).padStart(2,'0')}`; }
+
+// Returns blocked minute-ranges for a given date (only confirmed/pending appointments with duration)
+function getBlockedRanges(dateStr) {
+  const appts = getAppointments().filter(a => a.date === dateStr && a.status !== 'iptal');
+  return appts.map(a => {
+    const start = toMins(a.time);
+    const dur = a.duration || 30; // default 30 min if no duration set
+    return { start, end: start + dur };
+  });
+}
+
+// Is a specific time slot (30-min block) blocked?
+function isSlotBlocked(dateStr, timeStr) {
+  const slotStart = toMins(timeStr);
+  const slotEnd = slotStart + 30;
+  const ranges = getBlockedRanges(dateStr);
+  return ranges.some(r => slotStart < r.end && slotEnd > r.start);
+}
+
+// Get all available slots for a date
+function getAvailableSlots(dateStr) {
+  const slots = [];
+  for (let h = OPEN_HOUR; h <= CLOSE_HOUR; h++) {
+    for (let m = 0; m < 60; m += 30) {
+      if (h === CLOSE_HOUR && m > CLOSE_MIN) break;
+      const t = fromMins(h*60+m);
+      if (!isSlotBlocked(dateStr, t)) slots.push(t);
+    }
+  }
+  return slots;
+}
+
+// --- UI ---
 function renderServicesDisplay() {
   const services = getServices();
   document.getElementById('services-display').innerHTML = services.map((s,i) =>
@@ -251,16 +317,13 @@ function renderServicesDisplay() {
 }
 
 function renderChips() {
-  const services = getServices();
   const wrap = document.getElementById('service-chips');
   wrap.innerHTML = '';
-  services.forEach(s => {
+  getServices().forEach(s => {
     const lbl = document.createElement('label');
     lbl.className = 'svc-chip';
     lbl.innerHTML = `<input type="checkbox" value="${s}"><span>${s}</span>`;
-    lbl.querySelector('input').addEventListener('change', function() {
-      lbl.classList.toggle('selected', this.checked);
-    });
+    lbl.querySelector('input').addEventListener('change', function() { lbl.classList.toggle('selected', this.checked); });
     wrap.appendChild(lbl);
   });
 }
@@ -271,7 +334,6 @@ function toggleCustom() {
   if (wrap.classList.contains('open')) document.getElementById('custom-input').focus();
 }
 
-// Date
 const dateInput = document.getElementById('date');
 dateInput.min = new Date().toISOString().split('T')[0];
 dateInput.addEventListener('input', function() {
@@ -288,16 +350,17 @@ function generateTimeSlots(dateStr) {
   const container = document.getElementById('time-slots');
   container.innerHTML = '';
   selectedTime = '';
-  const booked = getBookedSlots(dateStr);
-  for (let h = 9; h <= 18; h++) {
+  for (let h = OPEN_HOUR; h <= CLOSE_HOUR; h++) {
     for (let m = 0; m < 60; m += 30) {
-      if (h === 18 && m > 30) break;
-      const t = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
+      if (h === CLOSE_HOUR && m > CLOSE_MIN) break;
+      const t = fromMins(h*60+m);
+      const blocked = isSlotBlocked(dateStr, t);
       const btn = document.createElement('button');
       btn.type = 'button';
-      btn.className = 'time-slot' + (booked.includes(t) ? ' disabled' : '');
+      btn.className = 'time-slot' + (blocked ? ' disabled' : '');
       btn.textContent = t;
-      if (!booked.includes(t)) btn.onclick = () => {
+      if (blocked) btn.title = 'Bu saat dolu';
+      else btn.onclick = () => {
         document.querySelectorAll('.time-slot').forEach(b => b.classList.remove('selected'));
         btn.classList.add('selected'); selectedTime = t;
       };
@@ -306,11 +369,21 @@ function generateTimeSlots(dateStr) {
   }
 }
 
-function getBookedSlots(dateStr) {
-  try {
-    return JSON.parse(localStorage.getItem('seda_appointments') || '[]')
-      .filter(a => a.date === dateStr && a.status !== 'iptal').map(a => a.time);
-  } catch(e) { return []; }
+// --- Conflict modal ---
+let altSelectedTime = '';
+let pendingAppt = null;
+
+function closeConflict() {
+  document.getElementById('conflict-overlay').classList.remove('open');
+  altSelectedTime = '';
+  pendingAppt = null;
+}
+
+function confirmAltSlot() {
+  if (!altSelectedTime || !pendingAppt) return;
+  pendingAppt.time = altSelectedTime;
+  saveAndShowSuccess(pendingAppt);
+  closeConflict();
 }
 
 function submitBooking() {
@@ -328,21 +401,62 @@ function submitBooking() {
   }
 
   const appt = { id: Date.now().toString(), name, phone, service: serviceStr, date, time: selectedTime, note, status: 'bekliyor', createdAt: new Date().toISOString() };
-  const all = JSON.parse(localStorage.getItem('seda_appointments') || '[]');
+
+  // Check conflict
+  if (isSlotBlocked(date, selectedTime)) {
+    // Show conflict modal with available slots
+    const available = getAvailableSlots(date);
+    pendingAppt = appt;
+    altSelectedTime = '';
+
+    const dateF = new Date(date+'T00:00:00').toLocaleDateString('tr-TR',{weekday:'long',day:'numeric',month:'long'});
+    document.getElementById('conflict-msg').textContent = `${selectedTime} saati için ${dateF} tarihinde yerimiz kalmadı. Aynı gün için uygun saatler aşağıda listelenmiştir, birini seçerek talebinizi gönderebilirsiniz.`;
+
+    const wrap = document.getElementById('alt-slots-wrap');
+    if (!available.length) {
+      wrap.innerHTML = '<div class="no-slots-msg">Üzgünüz, bu tarihte başka uygun saat kalmadı. Lütfen farklı bir gün seçin.</div>';
+      document.getElementById('conflict-confirm-btn').style.display = 'none';
+    } else {
+      wrap.innerHTML = '<div class="alt-slots" id="alt-slots"></div>';
+      document.getElementById('conflict-confirm-btn').style.display = 'none';
+      available.forEach(t => {
+        const btn = document.createElement('button');
+        btn.className = 'alt-slot';
+        btn.textContent = t;
+        btn.onclick = () => {
+          document.querySelectorAll('.alt-slot').forEach(b => b.classList.remove('picked'));
+          btn.classList.add('picked');
+          altSelectedTime = t;
+          document.getElementById('conflict-confirm-btn').style.display = 'block';
+        };
+        document.getElementById('alt-slots').appendChild(btn);
+      });
+    }
+    document.getElementById('conflict-overlay').classList.add('open');
+    return;
+  }
+
+  saveAndShowSuccess(appt);
+}
+
+function saveAndShowSuccess(appt) {
+  const all = getAppointments();
   all.push(appt);
   localStorage.setItem('seda_appointments', JSON.stringify(all));
 
   document.getElementById('booking-form').style.display = 'none';
   document.getElementById('success-msg').style.display = 'block';
 
-  const dateF = new Date(date + 'T00:00:00').toLocaleDateString('tr-TR', { weekday:'long', day:'numeric', month:'long' });
-  document.getElementById('success-detail').innerHTML = `<strong>${name}</strong> için <strong>${dateF}</strong> saat <strong>${selectedTime}</strong><br><em>${serviceStr}</em><br><br>Salonumuz kısa süre içinde sizi onaylayacaktır.`;
+  const dateF = new Date(appt.date+'T00:00:00').toLocaleDateString('tr-TR',{weekday:'long',day:'numeric',month:'long'});
+  document.getElementById('success-detail').innerHTML = `<strong>${appt.name}</strong> için <strong>${dateF}</strong> saat <strong>${appt.time}</strong><br><em>${appt.service}</em><br><br>Salonumuz kısa süre içinde sizi onaylayacaktır.`;
 
-  const waMsg = encodeURIComponent(`Merhaba Seda Hanım! Randevu almak istiyorum.\n\n👤 ${name}\n📞 ${phone}\n✂️ ${serviceStr}\n📅 ${dateF}\n🕐 ${selectedTime}${note ? '\n📝 ' + note : ''}`);
+  const waMsg = encodeURIComponent(`Merhaba Seda Hanım! Randevu almak istiyorum.\n\n👤 ${appt.name}\n📞 ${appt.phone}\n✂️ ${appt.service}\n📅 ${dateF}\n🕐 ${appt.time}${appt.note ? '\n📝 ' + appt.note : ''}`);
   document.getElementById('wa-link').href = `https://wa.me/${WA_NUMBER}?text=${waMsg}`;
 }
 
-const obs = new IntersectionObserver(es => es.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); }), { threshold: 0.1 });
+document.getElementById('conflict-overlay').addEventListener('click', function(e) { if(e.target===this) closeConflict(); });
+
+const obs = new IntersectionObserver(es => es.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); }), {threshold:0.1});
 document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
 
 renderServicesDisplay();

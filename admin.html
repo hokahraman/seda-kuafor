@@ -16,12 +16,11 @@
     --green: #3A7D5B; --red: #C0392B;
   }
   body { font-family: 'Jost', sans-serif; background: #F4EEE7; color: var(--text); font-weight: 300; min-height: 100vh; }
-
   .layout { display: flex; min-height: 100vh; }
 
   .sidebar { width: 260px; min-height: 100vh; background: var(--wine); display: flex; flex-direction: column; position: fixed; top: 0; left: 0; bottom: 0; z-index: 50; }
   .sidebar-logo { padding: 32px 28px 24px; border-bottom: 1px solid rgba(255,255,255,0.1); }
-  .sidebar-logo h1 { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: #fff; line-height: 1.2; }
+  .sidebar-logo h1 { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: #fff; }
   .sidebar-logo h1 em { color: var(--gold-light); }
   .sidebar-logo p { font-size: 0.72rem; color: rgba(255,255,255,0.5); margin-top: 4px; letter-spacing: 0.1em; text-transform: uppercase; }
   .sidebar-nav { padding: 24px 16px; flex: 1; }
@@ -31,13 +30,13 @@
   .nav-item.active { background: rgba(255,255,255,0.15); color: #fff; font-weight: 500; }
   .nav-item .icon { font-size: 1rem; width: 20px; text-align: center; }
   .sidebar-footer { padding: 20px 28px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 0.78rem; color: rgba(255,255,255,0.4); }
-  .sidebar-footer a { color: var(--gold-light); text-decoration: none; font-size: 0.82rem; }
+  .sidebar-footer a { color: var(--gold-light); text-decoration: none; }
 
   .main { margin-left: 260px; flex: 1; padding: 32px 36px; min-height: 100vh; }
   .topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px; flex-wrap: wrap; gap: 12px; }
   .topbar h2 { font-family: 'Playfair Display', serif; font-size: 1.7rem; color: var(--wine); }
   .topbar h2 em { font-style: italic; color: var(--gold); }
-  .add-btn { padding: 11px 28px; background: var(--wine); color: #fff; border: none; font-family: 'Jost', sans-serif; font-size: 0.82rem; letter-spacing: 0.1em; cursor: pointer; transition: background 0.2s; display: flex; align-items: center; gap: 8px; }
+  .add-btn { padding: 11px 28px; background: var(--wine); color: #fff; border: none; font-family: 'Jost', sans-serif; font-size: 0.82rem; letter-spacing: 0.1em; cursor: pointer; transition: background 0.2s; }
   .add-btn:hover { background: var(--wine-light); }
 
   .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 32px; }
@@ -49,36 +48,53 @@
   .stat-label { font-size: 0.72rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-soft); margin-bottom: 8px; }
   .stat-num { font-family: 'Playfair Display', serif; font-size: 2.2rem; color: var(--text); line-height: 1; }
 
+  /* CALENDAR */
+  .calendar-container { background: #fff; margin-bottom: 24px; }
+  .calendar-header { display: flex; justify-content: space-between; align-items: center; padding: 20px 24px; border-bottom: 1px solid var(--cream); }
+  .cal-title { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--wine); }
+  .cal-nav { display: flex; gap: 8px; }
+  .cal-nav button { padding: 6px 14px; border: 1px solid rgba(196,149,90,0.4); background: #fff; cursor: pointer; font-family: 'Jost', sans-serif; font-size: 0.8rem; color: var(--text-soft); transition: all 0.2s; }
+  .cal-nav button:hover { background: var(--wine); color: #fff; border-color: var(--wine); }
+
+  /* New absolute-positioned calendar */
+  .cal-body { display: flex; overflow-x: auto; min-width: 0; }
+  .cal-time-col { flex: 0 0 56px; position: relative; }
+  .cal-time-col .time-label { position: absolute; right: 8px; font-size: 0.68rem; color: var(--text-soft); transform: translateY(-50%); white-space: nowrap; }
+  .cal-days-wrap { display: flex; flex: 1; border-top: 1px solid var(--cream); }
+  .cal-day-col { flex: 1; min-width: 100px; border-left: 1px solid var(--cream); position: relative; }
+  .cal-day-header { text-align: center; padding: 12px 4px; border-bottom: 1px solid var(--cream); font-size: 0.75rem; background: #fff; position: sticky; top: 0; z-index: 2; }
+  .cal-day-header .dname { text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-soft); font-weight: 500; }
+  .cal-day-header .dnum { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--text); }
+  .cal-day-header.today .dnum { color: var(--wine); font-weight: 600; }
+  .cal-day-header.closed .dname { color: #ccc; }
+  .cal-day-body { position: relative; }
+  .cal-hour-line { position: absolute; left: 0; right: 0; border-top: 1px solid var(--cream); }
+  .cal-half-line { position: absolute; left: 0; right: 0; border-top: 1px dashed rgba(0,0,0,0.05); }
+  .cal-closed-overlay { position: absolute; inset: 0; background: repeating-linear-gradient(45deg, transparent, transparent 8px, rgba(0,0,0,0.02) 8px, rgba(0,0,0,0.02) 16px); pointer-events: none; }
+
+  .cal-appt-block {
+    position: absolute; left: 3px; right: 3px;
+    border-radius: 3px; padding: 4px 7px;
+    font-size: 0.7rem; cursor: pointer;
+    overflow: hidden; z-index: 3;
+    transition: opacity 0.2s, box-shadow 0.2s;
+    border-left: 3px solid transparent;
+  }
+  .cal-appt-block:hover { opacity: 0.85; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
+  .cal-appt-block.bekliyor { background: rgba(196,149,90,0.18); border-color: var(--gold); color: #7A5020; }
+  .cal-appt-block.onaylandi { background: rgba(58,125,91,0.15); border-color: var(--green); color: #1E5C3A; }
+  .cal-appt-block.iptal { background: rgba(192,57,43,0.1); border-color: var(--red); color: #922B21; text-decoration: line-through; }
+  .cal-appt-block .appt-time { font-weight: 600; margin-bottom: 1px; }
+  .cal-appt-block .appt-who { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .cal-appt-block .appt-dur { opacity: 0.7; font-size: 0.65rem; }
+
+  /* LIST */
   .filters { display: flex; gap: 12px; align-items: center; margin-bottom: 24px; flex-wrap: wrap; }
   .filter-btn { padding: 8px 20px; border: 1px solid rgba(196,149,90,0.4); background: #fff; color: var(--text-soft); font-family: 'Jost', sans-serif; font-size: 0.82rem; cursor: pointer; transition: all 0.2s; }
   .filter-btn:hover { border-color: var(--wine); color: var(--wine); }
   .filter-btn.active { background: var(--wine); color: #fff; border-color: var(--wine); }
   input[type="date"].filter-date { padding: 8px 16px; border: 1px solid rgba(196,149,90,0.4); background: #fff; font-family: 'Jost', sans-serif; font-size: 0.82rem; color: var(--text); outline: none; }
 
-  /* CALENDAR */
-  .calendar-container { background: #fff; margin-bottom: 24px; overflow-x: auto; }
-  .calendar-header { display: flex; justify-content: space-between; align-items: center; padding: 20px 24px; border-bottom: 1px solid var(--cream); }
-  .cal-title { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--wine); }
-  .cal-nav { display: flex; gap: 8px; }
-  .cal-nav button { padding: 6px 14px; border: 1px solid rgba(196,149,90,0.4); background: #fff; cursor: pointer; font-family: 'Jost', sans-serif; font-size: 0.8rem; color: var(--text-soft); transition: all 0.2s; }
-  .cal-nav button:hover { background: var(--wine); color: #fff; border-color: var(--wine); }
-  .week-grid { display: grid; grid-template-columns: 70px repeat(7, 1fr); min-width: 700px; }
-  .week-day-header { padding: 14px 8px; text-align: center; border-bottom: 1px solid var(--cream); border-left: 1px solid var(--cream); font-size: 0.75rem; }
-  .week-day-header .day-name { font-weight: 500; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-soft); }
-  .week-day-header .day-num { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--text); margin-top: 2px; }
-  .week-day-header.today .day-num { color: var(--wine); font-weight: 600; }
-  .week-day-header.closed { background: rgba(0,0,0,0.02); }
-  .week-day-header.closed .day-name { color: #ccc; }
-  .hour-label { padding: 0 8px; height: 52px; display: flex; align-items: center; font-size: 0.72rem; color: var(--text-soft); border-top: 1px solid var(--cream); justify-content: flex-end; }
-  .day-cell { border-left: 1px solid var(--cream); border-top: 1px solid var(--cream); height: 52px; position: relative; padding: 2px; }
-  .day-cell.closed { background: repeating-linear-gradient(45deg, transparent, transparent 6px, rgba(0,0,0,0.015) 6px, rgba(0,0,0,0.015) 12px); }
-  .cal-appt { position: absolute; left: 2px; right: 2px; top: 2px; padding: 3px 6px; font-size: 0.7rem; border-radius: 2px; cursor: pointer; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; transition: opacity 0.2s; }
-  .cal-appt:hover { opacity: 0.8; }
-  .cal-appt.bekliyor { background: rgba(196,149,90,0.2); color: #7A5020; border-left: 2px solid var(--gold); }
-  .cal-appt.onaylandi { background: rgba(58,125,91,0.15); color: #1E5C3A; border-left: 2px solid var(--green); }
-  .cal-appt.iptal { background: rgba(192,57,43,0.1); color: #922B21; border-left: 2px solid var(--red); text-decoration: line-through; }
-
-  /* APPT LIST */
   .appt-list { display: flex; flex-direction: column; gap: 10px; }
   .appt-card { background: #fff; display: grid; grid-template-columns: 4px 1fr auto; overflow: hidden; transition: transform 0.15s, box-shadow 0.15s; }
   .appt-card:hover { transform: translateY(-1px); box-shadow: 0 4px 20px rgba(107,45,62,0.08); }
@@ -86,51 +102,63 @@
   .appt-status-bar.bekliyor { background: var(--gold); }
   .appt-status-bar.onaylandi { background: var(--green); }
   .appt-status-bar.iptal { background: var(--red); }
-  .appt-body { padding: 18px 20px; }
-  .appt-top { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 6px; }
+  .appt-body { padding: 16px 20px; }
+  .appt-top { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 6px; }
   .appt-name { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--text); }
   .appt-badge { font-size: 0.67rem; letter-spacing: 0.12em; text-transform: uppercase; padding: 3px 10px; }
   .appt-badge.bekliyor { background: rgba(196,149,90,0.15); color: #8B5C1A; }
   .appt-badge.onaylandi { background: rgba(58,125,91,0.12); color: #1E5C3A; }
   .appt-badge.iptal { background: rgba(192,57,43,0.1); color: #922B21; }
-  .appt-meta { font-size: 0.83rem; color: var(--text-soft); display: flex; gap: 16px; flex-wrap: wrap; }
-  .appt-actions { padding: 16px; display: flex; flex-direction: column; gap: 6px; justify-content: center; align-items: flex-end; min-width: 150px; }
-  .action-btn { padding: 7px 16px; border: none; cursor: pointer; font-family: 'Jost', sans-serif; font-size: 0.78rem; transition: opacity 0.2s; width: 100%; text-align: center; }
+  .appt-dur-badge { font-size: 0.7rem; background: rgba(107,45,62,0.08); color: var(--wine); padding: 3px 10px; }
+  .appt-meta { font-size: 0.82rem; color: var(--text-soft); display: flex; gap: 14px; flex-wrap: wrap; }
+  .appt-actions { padding: 14px; display: flex; flex-direction: column; gap: 6px; justify-content: center; min-width: 150px; align-items: stretch; }
+  .action-btn { padding: 7px 12px; border: none; cursor: pointer; font-family: 'Jost', sans-serif; font-size: 0.78rem; transition: opacity 0.2s; text-align: center; }
   .action-btn.onay { background: var(--green); color: #fff; }
   .action-btn.red { background: var(--red); color: #fff; }
   .action-btn.wa { background: #25D366; color: #fff; text-decoration: none; display: block; }
   .action-btn:hover { opacity: 0.85; }
 
-  /* SERVICES MANAGEMENT */
+  /* SERVICES */
   .services-mgmt { background: #fff; padding: 28px; }
   .services-mgmt h3 { font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--wine); margin-bottom: 6px; }
   .services-mgmt .sub { font-size: 0.82rem; color: var(--text-soft); margin-bottom: 24px; }
   .svc-add-row { display: flex; gap: 10px; margin-bottom: 24px; }
   .svc-add-row input { flex: 1; border: 1px solid rgba(196,149,90,0.4); background: var(--ivory); padding: 12px 16px; font-family: 'Jost', sans-serif; font-size: 0.9rem; color: var(--text); outline: none; }
   .svc-add-row input:focus { border-color: var(--wine); }
-  .svc-add-row button { padding: 12px 24px; background: var(--wine); color: #fff; border: none; font-family: 'Jost', sans-serif; font-size: 0.82rem; cursor: pointer; transition: background 0.2s; white-space: nowrap; }
-  .svc-add-row button:hover { background: var(--wine-light); }
+  .svc-add-row button { padding: 12px 24px; background: var(--wine); color: #fff; border: none; font-family: 'Jost', sans-serif; font-size: 0.82rem; cursor: pointer; white-space: nowrap; }
   .svc-chips-admin { display: flex; flex-wrap: wrap; gap: 8px; }
-  .svc-chip-admin { display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; background: var(--ivory); border: 1px solid rgba(196,149,90,0.35); font-size: 0.85rem; color: var(--text); }
-  .svc-chip-admin .del { background: none; border: none; color: var(--text-soft); cursor: pointer; font-size: 1rem; line-height: 1; padding: 0; transition: color 0.2s; }
+  .svc-chip-admin { display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; background: var(--ivory); border: 1px solid rgba(196,149,90,0.35); font-size: 0.85rem; }
+  .svc-chip-admin .del { background: none; border: none; color: var(--text-soft); cursor: pointer; font-size: 1rem; padding: 0; transition: color 0.2s; }
   .svc-chip-admin .del:hover { color: var(--red); }
   .svc-reset { margin-top: 16px; font-size: 0.78rem; color: var(--text-soft); cursor: pointer; background: none; border: none; text-decoration: underline; }
-  .svc-reset:hover { color: var(--wine); }
 
-  /* MODAL */
-  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(44,24,16,0.5); z-index: 200; justify-content: center; align-items: center; }
+  /* DURATION APPROVAL MODAL */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(44,24,16,0.5); z-index: 200; justify-content: center; align-items: center; padding: 20px; }
   .modal-overlay.open { display: flex; }
-  .modal { background: var(--ivory); width: 100%; max-width: 520px; max-height: 90vh; overflow-y: auto; padding: 40px; animation: fadeUp 0.25s ease; }
-  .modal h3 { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--wine); margin-bottom: 24px; }
-  .modal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-  .modal-grid .full { grid-column: 1/-1; }
-  .modal label { font-size: 0.72rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-soft); display: block; margin-bottom: 6px; }
-  .modal input, .modal select { width: 100%; border: 1px solid rgba(196,149,90,0.35); background: #fff; padding: 12px 14px; font-family: 'Jost', sans-serif; font-size: 0.9rem; outline: none; appearance: none; }
+  .modal { background: var(--ivory); width: 100%; max-width: 480px; padding: 40px; animation: fadeUp 0.25s ease; max-height: 90vh; overflow-y: auto; }
+  .modal h3 { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--wine); margin-bottom: 6px; }
+  .modal .sub { font-size: 0.85rem; color: var(--text-soft); margin-bottom: 24px; line-height: 1.5; }
+  .modal label { font-size: 0.72rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-soft); display: block; margin-bottom: 8px; }
+  .modal input, .modal select { width: 100%; border: 1px solid rgba(196,149,90,0.35); background: #fff; padding: 12px 14px; font-family: 'Jost', sans-serif; font-size: 0.9rem; outline: none; appearance: none; margin-bottom: 16px; }
   .modal input:focus, .modal select:focus { border-color: var(--wine); }
-  .modal-actions { display: flex; gap: 12px; margin-top: 24px; }
+
+  /* Duration picker chips */
+  .dur-options { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
+  .dur-opt { padding: 10px 18px; border: 1px solid rgba(196,149,90,0.4); background: #fff; font-family: 'Jost', sans-serif; font-size: 0.85rem; cursor: pointer; color: var(--text); transition: all 0.2s; }
+  .dur-opt:hover { border-color: var(--wine); color: var(--wine); }
+  .dur-opt.selected { background: var(--wine); color: #fff; border-color: var(--wine); }
+
+  .appt-info-box { background: var(--cream); padding: 16px; margin-bottom: 20px; font-size: 0.85rem; color: var(--text); line-height: 1.7; }
+  .appt-info-box strong { color: var(--wine); }
+
+  .modal-actions { display: flex; gap: 12px; }
   .modal-btn { flex: 1; padding: 13px; border: none; cursor: pointer; font-family: 'Jost', sans-serif; font-size: 0.85rem; letter-spacing: 0.1em; }
   .modal-btn.primary { background: var(--wine); color: #fff; }
   .modal-btn.secondary { background: transparent; border: 1px solid rgba(196,149,90,0.4); color: var(--text-soft); }
+
+  /* ADD APPOINTMENT MODAL */
+  .modal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .modal-grid .full { grid-column: 1/-1; }
 
   .empty-state { text-align: center; padding: 64px 32px; color: var(--text-soft); background: #fff; }
   .empty-state .icon { font-size: 2.5rem; margin-bottom: 16px; }
@@ -143,7 +171,6 @@
     .nav-item { justify-content: center; }
     .main { margin-left: 60px; padding: 20px 16px; }
     .stats { grid-template-columns: repeat(2, 1fr); }
-    .appt-actions { min-width: unset; }
   }
 </style>
 </head>
@@ -161,7 +188,7 @@
       <div class="nav-item" onclick="showView('liste')"><span class="icon">📋</span><span>Randevular</span></div>
       <div class="nav-item" onclick="showView('hizmetler')"><span class="icon">✂️</span><span>Hizmetler</span></div>
       <div class="nav-label">Hızlı</div>
-      <div class="nav-item" onclick="openModal()"><span class="icon">➕</span><span>Randevu Ekle</span></div>
+      <div class="nav-item" onclick="openAddModal()"><span class="icon">➕</span><span>Randevu Ekle</span></div>
       <div class="nav-item" onclick="window.open('index.html','_blank')"><span class="icon">🌐</span><span>Müşteri Sitesi</span></div>
     </nav>
     <div class="sidebar-footer"><a href="index.html" target="_blank">→ Müşteri Sitesini Aç</a></div>
@@ -170,7 +197,7 @@
   <main class="main">
     <div class="topbar">
       <h2 id="view-title">Randevu <em>Takvimi</em></h2>
-      <button class="add-btn" onclick="openModal()">➕ Randevu Ekle</button>
+      <button class="add-btn" onclick="openAddModal()">➕ Randevu Ekle</button>
     </div>
 
     <div class="stats">
@@ -191,7 +218,10 @@
             <button onclick="changeWeek(1)">Sonraki →</button>
           </div>
         </div>
-        <div class="week-grid" id="week-grid"></div>
+        <div style="display:flex; overflow-x:auto;">
+          <div id="cal-time-col" style="flex:0 0 56px; position:relative;"></div>
+          <div id="cal-days-row" style="display:flex; flex:1; min-width:560px;"></div>
+        </div>
       </div>
     </div>
 
@@ -214,7 +244,7 @@
         <h3>Hizmet Listesini Yönet</h3>
         <p class="sub">Buraya eklediğiniz hizmetler müşteri sitesinde ve randevu formunda otomatik görünür.</p>
         <div class="svc-add-row">
-          <input type="text" id="new-svc-input" placeholder="Yeni hizmet adı... (örn: Saç Botoksu, Gelin Makyajı, Kaş Laminasyonu)">
+          <input type="text" id="new-svc-input" placeholder="Yeni hizmet adı... (örn: Kaş Laminasyonu, Gelin Makyajı)">
           <button onclick="addService()">➕ Ekle</button>
         </div>
         <div class="svc-chips-admin" id="svc-chips-admin"></div>
@@ -224,8 +254,30 @@
   </main>
 </div>
 
-<!-- MODAL -->
-<div class="modal-overlay" id="modal-overlay">
+<!-- DURATION / APPROVAL MODAL -->
+<div class="modal-overlay" id="approve-modal">
+  <div class="modal">
+    <h3>✅ Randevuyu Onayla</h3>
+    <p class="sub">Bu hizmet için ne kadar süre ayırmak istiyorsunuz? Takvimde o süre kadar yer bloke edilecek.</p>
+    <div class="appt-info-box" id="approve-info"></div>
+    <label>Süre Seçin</label>
+    <div class="dur-options">
+      <button class="dur-opt" data-mins="30" onclick="pickDur(this)">30 dk</button>
+      <button class="dur-opt" data-mins="45" onclick="pickDur(this)">45 dk</button>
+      <button class="dur-opt selected" data-mins="60" onclick="pickDur(this)">1 saat</button>
+      <button class="dur-opt" data-mins="90" onclick="pickDur(this)">1,5 saat</button>
+      <button class="dur-opt" data-mins="120" onclick="pickDur(this)">2 saat</button>
+      <button class="dur-opt" data-mins="180" onclick="pickDur(this)">3 saat</button>
+    </div>
+    <div class="modal-actions">
+      <button class="modal-btn secondary" onclick="closeApproveModal()">İptal</button>
+      <button class="modal-btn primary" onclick="confirmApprove()">Onayla ve Kaydet</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADD APPOINTMENT MODAL -->
+<div class="modal-overlay" id="add-modal">
   <div class="modal">
     <h3>Yeni Randevu Ekle</h3>
     <div class="modal-grid">
@@ -236,18 +288,30 @@
         <select id="m-service"></select>
         <input type="text" id="m-service-custom" placeholder="Veya özel hizmet yazın..." style="margin-top:8px;">
       </div>
-      <div><label>Durum</label>
-        <select id="m-status" style="appearance:none; background-image:url('data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2712%27 height=%278%27 viewBox=%270 0 12 8%27%3E%3Cpath d=%27M1 1l5 5 5-5%27 stroke=%27%236B2D3E%27 stroke-width=%271.5%27 fill=%27none%27/%3E%3C/svg%3E'); background-repeat:no-repeat; background-position:right 16px center; padding-right:40px; cursor:pointer; background-color:white;">
+      <div>
+        <label>Durum</label>
+        <select id="m-status">
           <option value="onaylandi">Onaylandı</option>
           <option value="bekliyor">Bekliyor</option>
         </select>
       </div>
+      <div>
+        <label>Süre</label>
+        <select id="m-dur">
+          <option value="30">30 dk</option>
+          <option value="45">45 dk</option>
+          <option value="60" selected>1 saat</option>
+          <option value="90">1,5 saat</option>
+          <option value="120">2 saat</option>
+          <option value="180">3 saat</option>
+        </select>
+      </div>
       <div><label>Tarih</label><input type="date" id="m-date"></div>
-      <div><label>Saat</label><select id="m-time" style="appearance:none; background-image:url('data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2712%27 height=%278%27 viewBox=%270 0 12 8%27%3E%3Cpath d=%27M1 1l5 5 5-5%27 stroke=%27%236B2D3E%27 stroke-width=%271.5%27 fill=%27none%27/%3E%3C/svg%3E'); background-repeat:no-repeat; background-position:right 16px center; padding-right:40px; cursor:pointer; background-color:white;"></select></div>
+      <div><label>Saat</label><select id="m-time"></select></div>
       <div class="full"><label>Not</label><input type="text" id="m-note" placeholder="İsteğe bağlı"></div>
     </div>
-    <div class="modal-actions">
-      <button class="modal-btn secondary" onclick="closeModal()">İptal</button>
+    <div class="modal-actions" style="margin-top:8px;">
+      <button class="modal-btn secondary" onclick="closeAddModal()">İptal</button>
       <button class="modal-btn primary" onclick="saveManual()">Kaydet</button>
     </div>
   </div>
@@ -256,107 +320,148 @@
 <script>
 const WA_NUMBER = '905378731929';
 const CLOSED_DAY = 2;
+const SLOT_H = 48; // px per 30 min
+const DAY_START = 9, DAY_END = 19; // hours
+const TOTAL_SLOTS = (DAY_END - DAY_START) * 2; // 20 slots
+const TOTAL_HEIGHT = TOTAL_SLOTS * SLOT_H;
+
 const DAYS_TR = ['Pazar','Pazartesi','Salı','Çarşamba','Perşembe','Cuma','Cumartesi'];
 const MONTHS_TR = ['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'];
-
-const DEFAULT_SERVICES = [
-  'Saç Kesimi','Saç Yıkama & Fön','Saç Boyama','Röfle / Balyaj',
-  'Ombre','Keratin Bakımı','Saç Botoksu','Perma / Düzleştirme',
-  'Manikür','Pedikür','Kalıcı Oje','Kaş Tasarımı',
-  'İpek Kirpik','Makyaj','Cilt Bakımı'
-];
+const DEFAULT_SERVICES = ['Saç Kesimi','Saç Yıkama & Fön','Saç Boyama','Röfle / Balyaj','Ombre','Keratin Bakımı','Saç Botoksu','Perma / Düzleştirme','Manikür','Pedikür','Kalıcı Oje','Kaş Tasarımı','İpek Kirpik','Makyaj','Cilt Bakımı'];
 
 let currentFilter = 'hepsi', weekOffset = 0, currentView = 'takvim';
+let approveId = null, approveDur = 60;
 
-function getAppointments() { try { return JSON.parse(localStorage.getItem('seda_appointments') || '[]'); } catch(e) { return []; } }
+function getAppointments() { try { return JSON.parse(localStorage.getItem('seda_appointments')||'[]'); } catch(e){ return []; } }
 function saveAppointments(arr) { localStorage.setItem('seda_appointments', JSON.stringify(arr)); }
-function getServices() { try { const s = localStorage.getItem('seda_services'); return s ? JSON.parse(s) : DEFAULT_SERVICES; } catch(e) { return DEFAULT_SERVICES; } }
+function getServices() { try { const s=localStorage.getItem('seda_services'); return s?JSON.parse(s):DEFAULT_SERVICES; } catch(e){ return DEFAULT_SERVICES; } }
 function saveServices(arr) { localStorage.setItem('seda_services', JSON.stringify(arr)); }
 function todayStr() { return new Date().toISOString().split('T')[0]; }
+function toMins(t) { const [h,m]=t.split(':').map(Number); return h*60+m; }
+function fromMins(m) { return `${String(Math.floor(m/60)).padStart(2,'0')}:${String(m%60).padStart(2,'0')}`; }
+function durLabel(m) { if(m<60) return m+'dk'; if(m===60) return '1 saat'; if(m===90) return '1,5 saat'; return (m/60)+' saat'; }
 
-// STATS
 function updateStats() {
   const all = getAppointments(), today = todayStr();
-  document.getElementById('stat-today').textContent = all.filter(a => a.date === today && a.status !== 'iptal').length;
-  document.getElementById('stat-bekliyor').textContent = all.filter(a => a.status === 'bekliyor').length;
-  document.getElementById('stat-onaylandi').textContent = all.filter(a => a.status === 'onaylandi').length;
-  document.getElementById('stat-iptal').textContent = all.filter(a => a.status === 'iptal').length;
+  document.getElementById('stat-today').textContent = all.filter(a=>a.date===today&&a.status!=='iptal').length;
+  document.getElementById('stat-bekliyor').textContent = all.filter(a=>a.status==='bekliyor').length;
+  document.getElementById('stat-onaylandi').textContent = all.filter(a=>a.status==='onaylandi').length;
+  document.getElementById('stat-iptal').textContent = all.filter(a=>a.status==='iptal').length;
 }
 
-// CALENDAR
+// ---- CALENDAR ----
 function getWeekStart(offset) {
   const d = new Date(), day = d.getDay();
-  d.setDate(d.getDate() - (day === 0 ? 6 : day - 1) + offset * 7);
+  d.setDate(d.getDate() - (day===0?6:day-1) + offset*7);
   d.setHours(0,0,0,0); return d;
 }
-function changeWeek(dir) { weekOffset = dir === 0 ? 0 : weekOffset + dir; renderCalendar(); }
+function changeWeek(dir) { weekOffset = dir===0?0:weekOffset+dir; renderCalendar(); }
 
 function renderCalendar() {
-  const grid = document.getElementById('week-grid');
-  grid.innerHTML = '';
   const ws = getWeekStart(weekOffset);
-  const we = new Date(ws); we.setDate(we.getDate() + 6);
+  const we = new Date(ws); we.setDate(we.getDate()+6);
   document.getElementById('cal-week-title').textContent = `${ws.getDate()} ${MONTHS_TR[ws.getMonth()]} – ${we.getDate()} ${MONTHS_TR[we.getMonth()]} ${we.getFullYear()}`;
+
+  const timeCol = document.getElementById('cal-time-col');
+  const daysRow = document.getElementById('cal-days-row');
+  timeCol.innerHTML = ''; daysRow.innerHTML = '';
+
+  // Time column: header spacer + hour labels
+  const headerSpacer = document.createElement('div');
+  headerSpacer.style.cssText = `height:52px; border-bottom:1px solid #F2EAE0;`;
+  timeCol.appendChild(headerSpacer);
+
+  const timeBody = document.createElement('div');
+  timeBody.style.cssText = `position:relative; height:${TOTAL_HEIGHT}px;`;
+  for (let h = DAY_START; h <= DAY_END; h++) {
+    const lbl = document.createElement('div');
+    const top = (h - DAY_START) * 2 * SLOT_H;
+    lbl.style.cssText = `position:absolute; right:8px; top:${top}px; font-size:0.68rem; color:var(--text-soft); transform:translateY(-50%); white-space:nowrap;`;
+    lbl.textContent = `${String(h).padStart(2,'0')}:00`;
+    timeBody.appendChild(lbl);
+  }
+  timeCol.appendChild(timeBody);
 
   const appts = getAppointments(), today = todayStr();
   const weekDays = Array.from({length:7}, (_,i) => { const d=new Date(ws); d.setDate(ws.getDate()+i); return d; });
 
-  // Corner
-  const corner = document.createElement('div'); corner.style.cssText='border-bottom:1px solid #F2EAE0;background:#fff;'; grid.appendChild(corner);
   weekDays.forEach(d => {
     const dateStr = d.toISOString().split('T')[0];
-    const h = document.createElement('div');
-    h.className = 'week-day-header' + (d.getDay()===CLOSED_DAY?' closed':'') + (dateStr===today?' today':'');
-    h.innerHTML = `<div class="day-name">${DAYS_TR[d.getDay()].substring(0,3)}</div><div class="day-num">${d.getDate()}</div>`;
-    grid.appendChild(h);
-  });
+    const isClosed = d.getDay() === CLOSED_DAY;
+    const isToday = dateStr === today;
 
-  for (let h = 9; h <= 18; h++) {
-    for (let m = 0; m < 60; m += 30) {
-      if (h===18 && m>30) break;
-      const timeStr = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
-      const lbl = document.createElement('div'); lbl.className='hour-label'; lbl.textContent=timeStr; grid.appendChild(lbl);
-      weekDays.forEach(d => {
-        const dateStr = d.toISOString().split('T')[0];
-        const cell = document.createElement('div');
-        cell.className = 'day-cell' + (d.getDay()===CLOSED_DAY?' closed':'');
-        if (d.getDay() !== CLOSED_DAY) {
-          appts.filter(a => a.date===dateStr && a.time===timeStr).forEach(a => {
-            const chip = document.createElement('div');
-            chip.className = `cal-appt ${a.status}`;
-            chip.textContent = `${a.name} · ${a.service}`;
-            chip.title = `${a.name} | ${a.service} | ${a.phone}`;
-            chip.onclick = () => { showView('liste'); renderList(); };
-            cell.appendChild(chip);
-          });
-        }
-        grid.appendChild(cell);
+    const col = document.createElement('div');
+    col.style.cssText = `flex:1; min-width:90px; border-left:1px solid #F2EAE0; display:flex; flex-direction:column;`;
+
+    // Header
+    const hdr = document.createElement('div');
+    hdr.className = 'cal-day-header' + (isToday?' today':'') + (isClosed?' closed':'');
+    hdr.innerHTML = `<div class="dname">${DAYS_TR[d.getDay()].substring(0,3)}</div><div class="dnum">${d.getDate()}</div>`;
+    col.appendChild(hdr);
+
+    // Body
+    const body = document.createElement('div');
+    body.className = 'cal-day-body';
+    body.style.cssText = `position:relative; height:${TOTAL_HEIGHT}px; background:#fff;`;
+
+    // Hour / half-hour lines
+    for (let i = 0; i <= TOTAL_SLOTS; i++) {
+      const line = document.createElement('div');
+      const isHour = i % 2 === 0;
+      line.style.cssText = `position:absolute; left:0; right:0; top:${i*SLOT_H}px; border-top:1px ${isHour?'solid':'dashed'} ${isHour?'#F2EAE0':'rgba(0,0,0,0.04)'};`;
+      body.appendChild(line);
+    }
+
+    if (isClosed) {
+      const overlay = document.createElement('div');
+      overlay.className = 'cal-closed-overlay';
+      body.appendChild(overlay);
+    } else {
+      // Appointments
+      const dayAppts = appts.filter(a => a.date === dateStr && a.status !== 'iptal');
+      dayAppts.forEach(a => {
+        const startMins = toMins(a.time);
+        const dur = a.duration || 30;
+        const topPx = ((startMins - DAY_START*60) / 30) * SLOT_H;
+        const heightPx = Math.max((dur / 30) * SLOT_H - 3, 20);
+
+        const chip = document.createElement('div');
+        chip.className = `cal-appt-block ${a.status}`;
+        chip.style.cssText = `top:${topPx}px; height:${heightPx}px;`;
+        chip.innerHTML = `<div class="appt-time">${a.time}</div><div class="appt-who">${a.name}</div><div class="appt-dur">${a.service.split(',')[0]} · ${durLabel(dur)}</div>`;
+        chip.title = `${a.name} | ${a.service} | ${a.phone} | ${durLabel(dur)}`;
+        chip.onclick = () => { showView('liste'); };
+        body.appendChild(chip);
       });
     }
-  }
+
+    col.appendChild(body);
+    daysRow.appendChild(col);
+  });
 }
 
-// LIST
+// ---- LIST ----
 function setFilter(f, btn) {
   currentFilter = f;
-  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
   renderList();
 }
 function renderList() {
   const all = getAppointments();
   const dateFilter = document.getElementById('filter-date').value;
-  let filtered = currentFilter === 'hepsi' ? all : all.filter(a => a.status === currentFilter);
-  if (dateFilter) filtered = filtered.filter(a => a.date === dateFilter);
-  filtered.sort((a,b) => (a.date+a.time).localeCompare(b.date+b.time));
+  let filtered = currentFilter==='hepsi' ? all : all.filter(a=>a.status===currentFilter);
+  if (dateFilter) filtered = filtered.filter(a=>a.date===dateFilter);
+  filtered.sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time));
   const container = document.getElementById('appt-list');
   container.innerHTML = '';
   if (!filtered.length) {
-    container.innerHTML = '<div class="empty-state"><div class="icon">📭</div><p>Bu filtreye uygun randevu bulunamadı.</p></div>'; return;
+    container.innerHTML='<div class="empty-state"><div class="icon">📭</div><p>Bu filtreye uygun randevu bulunamadı.</p></div>'; return;
   }
   filtered.forEach(a => {
     const d = new Date(a.date+'T00:00:00');
     const dateF = `${DAYS_TR[d.getDay()]}, ${d.getDate()} ${MONTHS_TR[d.getMonth()]}`;
+    const dur = a.duration || null;
     const waMsg = encodeURIComponent(`Merhaba ${a.name}! Seda Kuaför'den arıyoruz. ${dateF} ${a.time} randevunuz onaylandı. Görüşmek üzere! 💇‍♀️`);
     const statusLabel = {bekliyor:'⏳ Bekliyor', onaylandi:'✅ Onaylandı', iptal:'❌ İptal'}[a.status];
     const card = document.createElement('div');
@@ -367,133 +472,129 @@ function renderList() {
         <div class="appt-top">
           <span class="appt-name">${a.name}</span>
           <span class="appt-badge ${a.status}">${statusLabel}</span>
+          ${dur ? `<span class="appt-dur-badge">⏱ ${durLabel(dur)}</span>` : ''}
         </div>
         <div class="appt-meta">
           <span>✂️ ${a.service}</span>
           <span>📅 ${dateF}</span>
-          <span>🕐 ${a.time}</span>
+          <span>🕐 ${a.time}${dur?` – ${fromMins(toMins(a.time)+dur)}`:'?'}</span>
           <span>📞 ${a.phone}</span>
-          ${a.note ? `<span>📝 ${a.note}</span>` : ''}
+          ${a.note?`<span>📝 ${a.note}</span>`:''}
         </div>
       </div>
       <div class="appt-actions">
-        ${a.status==='bekliyor' ? `<button class="action-btn onay" onclick="updateStatus('${a.id}','onaylandi')">✅ Onayla</button>` : ''}
-        ${a.status!=='iptal' ? `<button class="action-btn red" onclick="updateStatus('${a.id}','iptal')">❌ İptal</button>` : ''}
+        ${a.status==='bekliyor'?`<button class="action-btn onay" onclick="openApproveModal('${a.id}')">✅ Onayla</button>`:''}
+        ${a.status!=='iptal'?`<button class="action-btn red" onclick="updateStatus('${a.id}','iptal')">❌ İptal</button>`:''}
         <a class="action-btn wa" href="https://wa.me/${WA_NUMBER}?text=${waMsg}" target="_blank">📱 WhatsApp</a>
       </div>`;
     container.appendChild(card);
   });
 }
-function updateStatus(id, status) {
-  const all = getAppointments(), idx = all.findIndex(a => a.id===id);
-  if (idx>-1) { all[idx].status=status; saveAppointments(all); }
+
+function updateStatus(id, status, duration) {
+  const all = getAppointments(), idx = all.findIndex(a=>a.id===id);
+  if (idx>-1) { all[idx].status=status; if(duration) all[idx].duration=duration; saveAppointments(all); }
   refresh();
 }
 
-// SERVICES MANAGEMENT
-function renderServicesAdmin() {
-  const services = getServices();
-  const wrap = document.getElementById('svc-chips-admin');
-  wrap.innerHTML = '';
-  services.forEach((s,i) => {
-    const chip = document.createElement('div');
-    chip.className = 'svc-chip-admin';
-    chip.innerHTML = `<span>${s}</span><button class="del" onclick="removeService(${i})" title="Sil">✕</button>`;
-    wrap.appendChild(chip);
-  });
-}
-function addService() {
-  const input = document.getElementById('new-svc-input');
-  const val = input.value.trim();
-  if (!val) return;
-  const services = getServices();
-  if (services.includes(val)) { alert('Bu hizmet zaten listede var.'); return; }
-  services.push(val);
-  saveServices(services);
-  input.value = '';
-  renderServicesAdmin();
-  populateModalServiceSelect();
-}
-function removeService(idx) {
-  const services = getServices();
-  services.splice(idx, 1);
-  saveServices(services);
-  renderServicesAdmin();
-  populateModalServiceSelect();
-}
-function resetServices() {
-  if (confirm('Hizmet listesi varsayılana sıfırlanacak. Emin misiniz?')) {
-    localStorage.removeItem('seda_services');
-    renderServicesAdmin();
-    populateModalServiceSelect();
+// ---- APPROVE MODAL ----
+function openApproveModal(id) {
+  approveId = id; approveDur = 60;
+  document.querySelectorAll('.dur-opt').forEach(b=>b.classList.toggle('selected', parseInt(b.dataset.mins)===60));
+  const a = getAppointments().find(x=>x.id===id);
+  if (a) {
+    const d = new Date(a.date+'T00:00:00');
+    const dateF = `${DAYS_TR[d.getDay()]}, ${d.getDate()} ${MONTHS_TR[d.getMonth()]}`;
+    document.getElementById('approve-info').innerHTML = `<strong>${a.name}</strong> · ${a.phone}<br>✂️ ${a.service}<br>📅 ${dateF} · 🕐 ${a.time}`;
   }
+  document.getElementById('approve-modal').classList.add('open');
 }
-document.getElementById('new-svc-input').addEventListener('keydown', e => { if(e.key==='Enter') addService(); });
+function closeApproveModal() { document.getElementById('approve-modal').classList.remove('open'); approveId=null; }
+function pickDur(btn) {
+  document.querySelectorAll('.dur-opt').forEach(b=>b.classList.remove('selected'));
+  btn.classList.add('selected');
+  approveDur = parseInt(btn.dataset.mins);
+}
+function confirmApprove() {
+  if (!approveId) return;
+  updateStatus(approveId, 'onaylandi', approveDur);
+  closeApproveModal();
+}
 
-// MODAL
-function openModal() {
-  document.getElementById('modal-overlay').classList.add('open');
+// ---- ADD MODAL ----
+function openAddModal() {
+  document.getElementById('add-modal').classList.add('open');
   document.getElementById('m-date').value = todayStr();
   document.getElementById('m-date').min = todayStr();
   populateModalServiceSelect();
   populateTimeSelect();
 }
-function closeModal() { document.getElementById('modal-overlay').classList.remove('open'); }
+function closeAddModal() { document.getElementById('add-modal').classList.remove('open'); }
 function populateModalServiceSelect() {
-  const sel = document.getElementById('m-service');
-  const services = getServices();
-  sel.innerHTML = services.map(s => `<option value="${s}">${s}</option>`).join('');
+  document.getElementById('m-service').innerHTML = getServices().map(s=>`<option value="${s}">${s}</option>`).join('');
 }
 function populateTimeSelect() {
-  const sel = document.getElementById('m-time');
-  sel.innerHTML = '';
-  for (let h=9; h<=18; h++) for (let m=0; m<60; m+=30) {
-    if (h===18&&m>30) break;
-    const t=`${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
-    sel.innerHTML+=`<option value="${t}">${t}</option>`;
+  let html = '';
+  for (let h=DAY_START; h<DAY_END; h++) for (let m=0;m<60;m+=30) {
+    const t=fromMins(h*60+m); html+=`<option value="${t}">${t}</option>`;
   }
+  document.getElementById('m-time').innerHTML = html;
 }
 function saveManual() {
-  const name = document.getElementById('m-name').value.trim();
-  const phone = document.getElementById('m-phone').value.trim();
-  const serviceFromList = document.getElementById('m-service').value;
-  const serviceCustom = document.getElementById('m-service-custom').value.trim();
-  const service = serviceCustom || serviceFromList;
-  const status = document.getElementById('m-status').value;
-  const date = document.getElementById('m-date').value;
-  const time = document.getElementById('m-time').value;
-  const note = document.getElementById('m-note').value.trim();
+  const name=document.getElementById('m-name').value.trim();
+  const phone=document.getElementById('m-phone').value.trim();
+  const svcCustom=document.getElementById('m-service-custom').value.trim();
+  const svcList=document.getElementById('m-service').value;
+  const service = svcCustom || svcList;
+  const status=document.getElementById('m-status').value;
+  const duration=parseInt(document.getElementById('m-dur').value);
+  const date=document.getElementById('m-date').value;
+  const time=document.getElementById('m-time').value;
+  const note=document.getElementById('m-note').value.trim();
   if (!name||!phone||!date) { alert('Ad, telefon ve tarih zorunludur.'); return; }
-  const all = getAppointments();
-  all.push({id:Date.now().toString(), name, phone, service, status, date, time, note, createdAt:new Date().toISOString()});
+  const all=getAppointments();
+  all.push({id:Date.now().toString(), name, phone, service, status, duration, date, time, note, createdAt:new Date().toISOString()});
   saveAppointments(all);
-  closeModal();
-  document.getElementById('m-name').value='';
-  document.getElementById('m-phone').value='';
-  document.getElementById('m-service-custom').value='';
-  document.getElementById('m-note').value='';
+  closeAddModal();
+  ['m-name','m-phone','m-service-custom','m-note'].forEach(id=>document.getElementById(id).value='');
   refresh();
 }
 
-// VIEW SWITCHING
+// ---- SERVICES ----
+function renderServicesAdmin() {
+  const services = getServices();
+  document.getElementById('svc-chips-admin').innerHTML = '';
+  services.forEach((s,i)=>{
+    const chip=document.createElement('div'); chip.className='svc-chip-admin';
+    chip.innerHTML=`<span>${s}</span><button class="del" onclick="removeService(${i})">✕</button>`;
+    document.getElementById('svc-chips-admin').appendChild(chip);
+  });
+}
+function addService() {
+  const input=document.getElementById('new-svc-input'), val=input.value.trim();
+  if (!val) return;
+  const s=getServices(); if(s.includes(val)){alert('Bu hizmet zaten listede var.');return;}
+  s.push(val); saveServices(s); input.value=''; renderServicesAdmin();
+}
+function removeService(idx) { const s=getServices(); s.splice(idx,1); saveServices(s); renderServicesAdmin(); }
+function resetServices() { if(confirm('Varsayılan listeye sıfırlansın mı?')){localStorage.removeItem('seda_services');renderServicesAdmin();} }
+document.getElementById('new-svc-input').addEventListener('keydown', e=>{if(e.key==='Enter')addService();});
+
+// ---- VIEW ----
 function showView(v) {
   currentView = v;
-  ['takvim','liste','hizmetler'].forEach(name => {
-    document.getElementById('view-'+name).style.display = name===v ? 'block' : 'none';
-  });
-  document.querySelectorAll('.nav-item').forEach((item,i) => {
-    item.classList.toggle('active', ['takvim','liste','hizmetler'][i]===v);
-  });
-  const titles = { takvim:'Randevu <em>Takvimi</em>', liste:'Tüm <em>Randevular</em>', hizmetler:'Hizmet <em>Yönetimi</em>' };
-  document.getElementById('view-title').innerHTML = titles[v];
-  if (v==='hizmetler') renderServicesAdmin();
-  if (v==='liste') renderList();
-  if (v==='takvim') renderCalendar();
+  ['takvim','liste','hizmetler'].forEach(n=>document.getElementById('view-'+n).style.display=n===v?'block':'none');
+  document.querySelectorAll('.nav-item').forEach((item,i)=>item.classList.toggle('active',['takvim','liste','hizmetler'][i]===v));
+  document.getElementById('view-title').innerHTML = {takvim:'Randevu <em>Takvimi</em>',liste:'Tüm <em>Randevular</em>',hizmetler:'Hizmet <em>Yönetimi</em>'}[v];
+  if(v==='hizmetler') renderServicesAdmin();
+  else if(v==='liste') renderList();
+  else renderCalendar();
 }
 
 function refresh() { updateStats(); if(currentView==='takvim') renderCalendar(); else if(currentView==='liste') renderList(); }
 
-document.getElementById('modal-overlay').addEventListener('click', function(e) { if(e.target===this) closeModal(); });
+document.getElementById('approve-modal').addEventListener('click',function(e){if(e.target===this)closeApproveModal();});
+document.getElementById('add-modal').addEventListener('click',function(e){if(e.target===this)closeAddModal();});
 
 updateStats();
 renderCalendar();
